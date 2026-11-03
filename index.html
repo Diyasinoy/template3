@@ -116,7 +116,7 @@
       display: grid;
       place-items: center;
       transition: opacity .7s;
-      background: radial-gradient(ellipse at 50% 30%, #fffdfa 0%, #f4eae0 100%);
+      background: url('img/bg1.jpeg') center/cover no-repeat;
     }
 
     .intro.leaving {
@@ -238,18 +238,18 @@
       transform-origin: 50% 100%;
       transform: scale(.52);
       transition: transform 1s cubic-bezier(.5, 0, .2, 1) .45s, translate 1.1s cubic-bezier(.5, 0, .3, 1);
-      background: linear-gradient(160deg, #1f1b1d, #121012);
+      background: linear-gradient(160deg, #ffffff, #fcf8f2);
       border: 2px solid var(--gold-2);
       outline: 1px solid var(--gold-3);
       outline-offset: -10px;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, .5);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, .25);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 30px 26px;
-      color: #efe1bf;
+      color: #70521e;
     }
 
     .std {
@@ -261,7 +261,7 @@
       letter-spacing: .04em;
       line-height: 1.55;
       margin: 0;
-      color: #c9b68a;
+      color: #8c6a2e;
     }
 
     .rule {
@@ -559,7 +559,7 @@
     .lightbox {
       position: fixed;
       inset: 0;
-      z-index: 200;
+      z-index: 99999;
       background: rgba(0, 0, 0, 0.92);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -1283,26 +1283,24 @@
         var ph = e.target.closest('.ph');
         if (!ph) return;
 
-        // If it's a gallery item with index
-        if (typeof ph.dataset.index !== 'undefined' && ph.dataset.index !== '') {
-          openLightbox(parseInt(ph.dataset.index, 10));
+        var src = ph.dataset.fullSrc;
+        if (!src && ph.style.backgroundImage) {
+          src = ph.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+        }
+
+        if (!src) return;
+
+        // Find index in current galleryImages array if present
+        var idx = typeof ph.dataset.index !== 'undefined' && ph.dataset.index !== '' 
+          ? parseInt(ph.dataset.index, 10) 
+          : galleryImages.indexOf(src);
+
+        if (idx !== -1 && idx !== undefined && !isNaN(idx)) {
+          openLightbox(idx);
         } else {
-          // If groom/bride photo or image with dataset.fullSrc or computed style background
-          var bg = ph.dataset.fullSrc;
-          if (!bg && ph.style.backgroundImage) {
-            bg = ph.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-          }
-          if (bg) {
-            // Find index in current galleryImages array if present, otherwise set directly
-            var foundIdx = galleryImages.indexOf(bg);
-            if (foundIdx !== -1) {
-              openLightbox(foundIdx);
-            } else {
-              lbImg.src = bg;
-              lightbox.classList.add('active');
-              lightbox.setAttribute('aria-hidden', 'false');
-            }
-          }
+          lbImg.src = src;
+          lightbox.classList.add('active');
+          lightbox.setAttribute('aria-hidden', 'false');
         }
       });
 

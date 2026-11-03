@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Aarav &amp; Meera – Wedding Invitation</title>
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <style>
     :root {
       --bg: #121012;
@@ -116,7 +117,7 @@
       display: grid;
       place-items: center;
       transition: opacity .7s;
-      background: url('img/bg.jpeg') center/cover no-repeat;
+      background: url('img/bg1.jpg') center/cover no-repeat;
     }
 
     .intro.leaving {
@@ -124,7 +125,18 @@
       pointer-events: none;
     }
 
+    .env-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
     .stage {
+      --ivory-1: #fcf9f2;
+      --ivory-2: #f3ebdc;
+      --ivory-3: #e8dcc5;
+      --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .36  0 0 0 0 .22  0 0 0 .10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
       position: relative;
       width: 340px;
       height: 238px;
@@ -136,40 +148,41 @@
       transition: translate 1.1s cubic-bezier(.5, 0, .3, 1), opacity .9s ease;
     }
 
+    .env-part svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* envelope interior / back: soft ivory paper */
     .back {
       inset: 0;
-      background: #ffffff;
-      border: 2px solid var(--gold-2);
-      box-shadow: 0 22px 40px rgba(0, 0, 0, .4);
+      background:
+        var(--grain),
+        linear-gradient(165deg, var(--ivory-2), var(--ivory-3));
+      border: 1px solid rgba(150, 120, 70, .22);
+      border-radius: 2px;
+      box-shadow:
+        0 2px 4px rgba(60, 40, 15, .18),
+        0 18px 30px -6px rgba(40, 25, 5, .38),
+        0 40px 60px -20px rgba(0, 0, 0, .45);
       z-index: 1;
     }
 
-    .lace {
-      background:
-        radial-gradient(circle, transparent 36%, rgba(217, 182, 104, 0.15) 38% 50%, transparent 52%) 0 0/20px 20px,
-        radial-gradient(circle, var(--gold-2) 1.2px, transparent 2px) 10px 10px/20px 20px,
-        #ffffff;
-      border: 1px solid rgba(217, 182, 104, 0.4);
-    }
-
+    /* openwork lace side panels (drawn in inline SVG) */
     .side {
       inset: 0;
-      z-index: 3;
-    }
-
-    .side.l {
-      clip-path: polygon(0 0, 56% 52%, 0 100%);
-    }
-
-    .side.r {
-      clip-path: polygon(100% 0, 44% 52%, 100% 100%);
+      z-index: 6;
+      filter: drop-shadow(0 1.5px 2px rgba(70, 50, 20, .28)) drop-shadow(0 6px 8px rgba(70, 50, 20, .12));
     }
 
     .bottom {
       inset: 0;
       z-index: 4;
-      background: linear-gradient(#ffffff, #fbf8f2);
-      border: 1px solid rgba(217, 182, 104, 0.4);
+      background:
+        var(--grain),
+        linear-gradient(180deg, var(--ivory-2) 38%, var(--ivory-1) 100%);
       clip-path: polygon(0 100%, 50% 40%, 100% 100%);
     }
 
@@ -189,33 +202,58 @@
       clip-path: polygon(0 0, 100% 0, 50% 64%);
       z-index: 5;
       backface-visibility: hidden;
-      box-shadow: inset 0 -3px 8px rgba(217, 182, 104, 0.25);
+      background:
+        var(--grain),
+        linear-gradient(180deg, var(--ivory-1) 0%, var(--ivory-1) 40%, var(--ivory-2) 100%);
     }
 
+    /* gold wax seal with embossed rose */
     .seal {
       position: absolute;
       left: 50%;
-      top: 50%;
-      width: 62px;
-      height: 62px;
-      margin: -26px 0 0 -31px;
+      top: 54%;
+      width: 78px;
+      height: 78px;
+      margin: -39px 0 0 -39px;
+      border: 0;
       border-radius: 50%;
-      border: 1px solid #ffe8ab;
       padding: 0;
       cursor: pointer;
-      z-index: 7;
-      background: radial-gradient(circle at 35% 30%, #f7dfa5, #d9b668 55%, #8d6a2a);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, .5), inset 0 0 0 4px rgba(255, 240, 190, .4), inset 0 -4px 8px rgba(70, 40, 5, .4);
-      display: grid;
-      place-items: center;
-      font: 400 24px "Pinyon Script", serif;
-      color: #4a3610;
-      text-shadow: 0 1px 0 rgba(255, 240, 190, .9);
+      z-index: 8;
+      background: transparent;
+      filter: drop-shadow(0 3px 3px rgba(40, 25, 5, .45)) drop-shadow(0 9px 10px rgba(40, 25, 5, .3));
       transition: opacity .5s, scale .4s;
     }
 
+    .seal svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
     .seal:hover {
-      scale: 1.06;
+      scale: 1.05;
+    }
+
+    /* a slow, soft glint across the wax */
+    .seal::after {
+      content: "";
+      position: absolute;
+      inset: 7%;
+      border-radius: 50%;
+      pointer-events: none;
+      background: linear-gradient(115deg, transparent 38%, rgba(255, 246, 214, .75) 50%, transparent 62%) 130% 0 / 260% 100% no-repeat;
+      mix-blend-mode: soft-light;
+      animation: glint 5.5s ease-in-out 1.2s infinite;
+    }
+
+    @keyframes glint {
+      0%, 55% { background-position: 130% 0; }
+      100% { background-position: -30% 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .seal::after { animation: none; opacity: 0; }
     }
 
     .seal:focus-visible,
@@ -292,6 +330,7 @@
       text-align: center;
       font-size: 18px;
       font-style: italic;
+      letter-spacing: .08em;
       color: var(--gold-1);
       transition: opacity .4s;
     }
@@ -302,7 +341,7 @@
 
     .stage.open .card {
       transform: scale(.72) translateY(-140px);
-      z-index: 6;
+      z-index: 7;
     }
 
     .stage.open .seal,
@@ -330,6 +369,46 @@
       pointer-events: none;
       transition: opacity .6s .9s;
       z-index: 25;
+    }
+
+    /* Music Toggle Button */
+    .music-btn {
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + 16px);
+      right: 16px;
+      z-index: 99;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--panel);
+      border: 1px solid var(--gold-2);
+      color: var(--gold-2);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, background 0.3s ease;
+      padding: 0;
+    }
+
+    .music-btn:hover {
+      transform: scale(1.08);
+      background: rgba(30, 25, 30, 0.95);
+    }
+
+    .music-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .music-btn.playing {
+      animation: pulseMusic 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseMusic {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(217, 182, 104, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(217, 182, 104, 0); }
     }
 
     .intro.shown-btn .enter {
@@ -577,8 +656,23 @@
       pointer-events: auto;
     }
 
+    .lightbox.single .lightbox-nav {
+      display: none;
+    }
+
     .lightbox img {
-      max-width: 88vw;
+      transform: scale(.94);
+      transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .lightbox.active img {
+      transform: scale(1);
+    }
+
+    .lightbox img {
+      max-width: 84vw;
       max-height: 78vh;
       object-fit: contain;
       border-radius: 14px;
@@ -904,8 +998,93 @@
 </head>
 <body class="lock">
 
+  <!-- Floating Audio Toggle Button -->
+  <button class="music-btn" id="music-toggle" type="button" aria-label="Toggle background music" title="Toggle background music" hidden>
+    <svg id="music-icon-off" viewBox="0 0 24 24"><path d="M4.27 3L3 4.27l4.66 4.66H3v6h4l5 5v-5.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4zm4.5 8c0-.85-.18-1.65-.49-2.4l1.55-1.55c.6.1.2 1.2.94 2.5 1.34 2.45 2.1 3.95 2.1 5.45 0 .58-.08 1.14-.22 1.68l-1.51-1.51c.14-.54.23-1.11.23-1.67 0-2.48-1.52-4.59-3.6-5.52z"/></svg>
+    <svg id="music-icon-on" viewBox="0 0 24 24" style="display:none;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+  </button>
+
   <!-- envelope intro -->
   <section class="intro" id="intro">
+    <svg class="env-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <!-- Lace motif tile: rosette, petals, scalloped ring and corner florets -->
+        <g id="lm" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5">
+          <circle cx="20" cy="20" r="2.6" fill="currentColor" stroke="none"/>
+          <circle cx="20" cy="20" r="5.2"/>
+          <g id="pet">
+            <ellipse cx="20" cy="9.6" rx="2.6" ry="4.6"/>
+          </g>
+          <use href="#pet" transform="rotate(45 20 20)"/>
+          <use href="#pet" transform="rotate(90 20 20)"/>
+          <use href="#pet" transform="rotate(135 20 20)"/>
+          <use href="#pet" transform="rotate(180 20 20)"/>
+          <use href="#pet" transform="rotate(225 20 20)"/>
+          <use href="#pet" transform="rotate(270 20 20)"/>
+          <use href="#pet" transform="rotate(315 20 20)"/>
+          <circle cx="20" cy="20" r="13.2" stroke-dasharray="1.6 2.6"/>
+          <circle cx="0" cy="0" r="2.4"/><circle cx="40" cy="0" r="2.4"/>
+          <circle cx="0" cy="40" r="2.4"/><circle cx="40" cy="40" r="2.4"/>
+          <path d="M3 0.6C9 5 5 9 0.6 3M37 0.6C31 5 35 9 39.4 3M3 39.4C9 35 5 31 0.6 37M37 39.4C31 35 35 31 39.4 37"/>
+          <circle cx="20" cy="0.2" r="1.1" fill="currentColor" stroke="none"/>
+          <circle cx="20" cy="39.8" r="1.1" fill="currentColor" stroke="none"/>
+          <circle cx="0.2" cy="20" r="1.1" fill="currentColor" stroke="none"/>
+          <circle cx="39.8" cy="20" r="1.1" fill="currentColor" stroke="none"/>
+        </g>
+        <pattern id="lace" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="translate(6 5) scale(.72)">
+          <use href="#lm" x="1" y="1.2" color="#cdbfa3" opacity=".75"/>
+          <use href="#lm" color="#fffdf8"/>
+        </pattern>
+        <path id="lacePath" d="M-10 -10 L0 0 A9.91 9.91 0 0 0 16.18 11.45 A9.91 9.91 0 0 0 32.36 22.91 A9.91 9.91 0 0 0 48.55 34.36 A9.91 9.91 0 0 0 64.73 45.82 A9.91 9.91 0 0 0 80.91 57.27 A9.91 9.91 0 0 0 97.09 68.73 A9.91 9.91 0 0 0 113.27 80.18 A9.91 9.91 0 0 0 129.45 91.64 A9.91 9.91 0 0 0 145.64 103.09 A9.91 9.91 0 0 0 161.82 114.55 A9.91 9.91 0 0 0 178.00 126.00 A10.52 10.52 0 0 0 160.20 137.20 A10.52 10.52 0 0 0 142.40 148.40 A10.52 10.52 0 0 0 124.60 159.60 A10.52 10.52 0 0 0 106.80 170.80 A10.52 10.52 0 0 0 89.00 182.00 A10.52 10.52 0 0 0 71.20 193.20 A10.52 10.52 0 0 0 53.40 204.40 A10.52 10.52 0 0 0 35.60 215.60 A10.52 10.52 0 0 0 17.80 226.80 A10.52 10.52 0 0 0 0.00 238.00 L-10 248 Z"/>
+        <clipPath id="envClip"><rect width="340" height="238"/></clipPath>
+        <radialGradient id="pearl" cx="35%" cy="30%" r="75%">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset=".6" stop-color="#f1e8d6"/>
+          <stop offset="1" stop-color="#cdbd9c"/>
+        </radialGradient>
+        <linearGradient id="laceShade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="178" y2="0">
+          <stop offset="0" stop-color="#8a6a30" stop-opacity=".16"/>
+          <stop offset=".55" stop-color="#8a6a30" stop-opacity=".02"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity=".18"/>
+        </linearGradient>
+        <linearGradient id="foil" gradientUnits="userSpaceOnUse" x1="90" y1="20" x2="250" y2="220">
+          <stop offset="0" stop-color="#8f6720"/>
+          <stop offset=".35" stop-color="#d4aa4c"/>
+          <stop offset=".65" stop-color="#a97b25"/>
+          <stop offset="1" stop-color="#c99c3f"/>
+        </linearGradient>
+        <g id="laceShape" clip-path="url(#envClip)">
+          <use href="#lacePath" fill="#e9dfcc"/>
+          <use href="#lacePath" fill="url(#lace)"/>
+          <use href="#lacePath" fill="url(#laceShade)"/>
+          <use href="#lacePath" fill="none" stroke="#d4b468" stroke-width=".8" stroke-opacity=".9" stroke-linejoin="round" transform="translate(-3.2 0)"/>
+          <use href="#lacePath" fill="none" stroke="#fffdf8" stroke-width="3.2" stroke-linejoin="round"/>
+          <use href="#lacePath" fill="none" stroke="#d8cbb0" stroke-width=".6" stroke-linejoin="round" transform="translate(.4 .6)"/>
+          <circle cx="16.2" cy="11.5" r="1.7" fill="url(#pearl)"/><circle cx="32.4" cy="22.9" r="1.7" fill="url(#pearl)"/><circle cx="48.5" cy="34.4" r="1.7" fill="url(#pearl)"/><circle cx="64.7" cy="45.8" r="1.7" fill="url(#pearl)"/><circle cx="80.9" cy="57.3" r="1.7" fill="url(#pearl)"/><circle cx="97.1" cy="68.7" r="1.7" fill="url(#pearl)"/><circle cx="113.3" cy="80.2" r="1.7" fill="url(#pearl)"/><circle cx="129.5" cy="91.6" r="1.7" fill="url(#pearl)"/><circle cx="145.6" cy="103.1" r="1.7" fill="url(#pearl)"/><circle cx="161.8" cy="114.5" r="1.7" fill="url(#pearl)"/><circle cx="160.2" cy="137.2" r="1.7" fill="url(#pearl)"/><circle cx="142.4" cy="148.4" r="1.7" fill="url(#pearl)"/><circle cx="124.6" cy="159.6" r="1.7" fill="url(#pearl)"/><circle cx="106.8" cy="170.8" r="1.7" fill="url(#pearl)"/><circle cx="89.0" cy="182.0" r="1.7" fill="url(#pearl)"/><circle cx="71.2" cy="193.2" r="1.7" fill="url(#pearl)"/><circle cx="53.4" cy="204.4" r="1.7" fill="url(#pearl)"/><circle cx="35.6" cy="215.6" r="1.7" fill="url(#pearl)"/><circle cx="17.8" cy="226.8" r="1.7" fill="url(#pearl)"/><circle cx="178.0" cy="126.0" r="1.7" fill="url(#pearl)"/>
+        </g>
+
+        <radialGradient id="wax" cx="36%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#f6e2a2"/>
+          <stop offset=".38" stop-color="#d9b25a"/>
+          <stop offset=".78" stop-color="#a97b2a"/>
+          <stop offset="1" stop-color="#7a5418"/>
+        </radialGradient>
+        <radialGradient id="waxIn" cx="60%" cy="68%" r="75%">
+          <stop offset="0" stop-color="#f2d88f"/>
+          <stop offset=".55" stop-color="#d4aa50"/>
+          <stop offset="1" stop-color="#b78a33"/>
+        </radialGradient>
+        <g id="rose" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M33 41C33 54 41 60 50 60C59 60 67 54 67 41"/>
+          <path d="M33 41C35 32 43 29 50 33C57 29 65 32 67 41"/>
+          <path d="M50 33C43 34 41 43 47 47C53 50 59 45 57 39C55 34 49 35 48 39C47 42 51 44 53 42"/>
+          <path d="M41 43C42 51 46 55 50 56M59 43C58 51 54 55 50 56"/>
+          <path d="M50 60C50 67 50 72 50 80"/>
+          <path d="M50 70C42 70 36 66 34 59C42 59 48 63 50 70Z"/>
+          <path d="M50 75C58 75 64 71 66 64C58 64 52 68 50 75Z"/>
+        </g>
+      </defs>
+    </svg>
     <div class="stage" id="stage">
       <div class="env-part back"></div>
       <article class="card" aria-label="Save the date">
@@ -917,13 +1096,37 @@
         <div class="rule"></div>
         <p class="small"><i>Together with their families</i></p>
       </article>
-      <div class="env-part side l lace"></div>
-      <div class="env-part side r lace"></div>
-      <div class="env-part bottom"></div>
+      <div class="env-part side l"><svg viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true"><use href="#laceShape"/></svg></div>
+      <div class="env-part side r"><svg viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true"><use href="#laceShape" transform="translate(340 0) scale(-1 1)"/></svg></div>
+      <div class="env-part bottom"><svg viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="0,238 170.0,95.2 340,238" fill="none" stroke="rgba(120,95,50,.2)" stroke-width="3"/>
+          <text x="170" y="196" text-anchor="middle" font-family="'Pinyon Script', cursive" font-size="21" fill="url(#foil)">Aarav &amp; Meera</text>
+          <g stroke="url(#foil)" stroke-width=".8" fill="url(#foil)" stroke-linecap="round">
+            <path d="M140 210H162M178 210H200" fill="none"/>
+            <path d="M170 207.2L172.8 210L170 212.8L167.2 210Z" stroke="none"/>
+          </g>
+        </svg></div>
       <div class="env-part flapwrap">
-        <div class="flap lace"></div>
+        <div class="flap"><svg viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true">
+          <polygon points="0,0 340,0 170.0,152.32" fill="none" stroke="rgba(120,95,50,.22)" stroke-width="3"/>
+          <polygon points="23.5,9.0 316.5,9.0 170.0,140.2" fill="none" stroke="#c4a35e" stroke-width="1" stroke-dasharray="1.5 4" stroke-linecap="round"/>
+          <g stroke="url(#foil)" stroke-width=".9" fill="url(#foil)" stroke-linecap="round">
+            <path d="M128 34H160M180 34H212" fill="none"/>
+            <path d="M170 30.2L173.8 34L170 37.8L166.2 34Z" stroke="none"/>
+            <circle cx="122" cy="34" r="1.2" stroke="none"/><circle cx="218" cy="34" r="1.2" stroke="none"/>
+          </g>
+        </svg></div>
       </div>
-      <button class="env-part seal" id="seal" type="button" aria-label="Open the invitation"><span>A&amp;M</span></button>
+      <button class="env-part seal" id="seal" type="button" aria-label="Open the invitation"><svg viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M97.18 50.00 C97.26 53.23 96.54 56.57 95.78 59.73 C95.02 62.89 94.22 66.22 92.61 68.97 C90.99 71.72 88.16 73.79 86.10 76.22 C84.03 78.66 82.50 81.45 80.24 83.58 C77.97 85.71 75.27 87.57 72.51 88.99 C69.75 90.41 66.66 91.26 63.69 92.12 C60.71 92.98 57.67 94.05 54.64 94.16 C51.61 94.27 48.56 93.13 45.50 92.79 C42.45 92.44 39.35 92.69 36.33 92.08 C33.31 91.47 30.35 90.35 27.40 89.15 C24.44 87.95 21.30 86.71 18.59 84.88 C15.89 83.06 13.17 80.80 11.18 78.21 C9.18 75.61 7.35 72.48 6.62 69.32 C5.88 66.15 6.70 62.41 6.77 59.19 C6.83 55.97 6.93 53.05 6.99 50.00 C7.06 46.95 6.91 43.97 7.16 40.89 C7.41 37.81 7.52 34.48 8.49 31.52 C9.46 28.55 11.16 25.69 12.99 23.11 C14.81 20.53 17.14 18.29 19.43 16.04 C21.71 13.80 23.93 11.14 26.70 9.65 C29.48 8.16 33.00 8.22 36.06 7.11 C39.12 6.00 41.92 3.60 45.06 3.00 C48.20 2.40 51.70 2.95 54.89 3.49 C58.08 4.03 61.33 4.90 64.21 6.26 C67.09 7.61 69.74 9.64 72.17 11.61 C74.59 13.58 76.60 15.92 78.76 18.06 C80.92 20.20 83.31 22.09 85.15 24.46 C86.98 26.84 88.08 29.64 89.76 32.30 C91.45 34.95 94.02 37.43 95.26 40.38 C96.49 43.33 97.09 46.77 97.18 50.00Z" fill="url(#wax)"/>
+        <path d="M97.18 50.00 C97.26 53.23 96.54 56.57 95.78 59.73 C95.02 62.89 94.22 66.22 92.61 68.97 C90.99 71.72 88.16 73.79 86.10 76.22 C84.03 78.66 82.50 81.45 80.24 83.58 C77.97 85.71 75.27 87.57 72.51 88.99 C69.75 90.41 66.66 91.26 63.69 92.12 C60.71 92.98 57.67 94.05 54.64 94.16 C51.61 94.27 48.56 93.13 45.50 92.79 C42.45 92.44 39.35 92.69 36.33 92.08 C33.31 91.47 30.35 90.35 27.40 89.15 C24.44 87.95 21.30 86.71 18.59 84.88 C15.89 83.06 13.17 80.80 11.18 78.21 C9.18 75.61 7.35 72.48 6.62 69.32 C5.88 66.15 6.70 62.41 6.77 59.19 C6.83 55.97 6.93 53.05 6.99 50.00 C7.06 46.95 6.91 43.97 7.16 40.89 C7.41 37.81 7.52 34.48 8.49 31.52 C9.46 28.55 11.16 25.69 12.99 23.11 C14.81 20.53 17.14 18.29 19.43 16.04 C21.71 13.80 23.93 11.14 26.70 9.65 C29.48 8.16 33.00 8.22 36.06 7.11 C39.12 6.00 41.92 3.60 45.06 3.00 C48.20 2.40 51.70 2.95 54.89 3.49 C58.08 4.03 61.33 4.90 64.21 6.26 C67.09 7.61 69.74 9.64 72.17 11.61 C74.59 13.58 76.60 15.92 78.76 18.06 C80.92 20.20 83.31 22.09 85.15 24.46 C86.98 26.84 88.08 29.64 89.76 32.30 C91.45 34.95 94.02 37.43 95.26 40.38 C96.49 43.33 97.09 46.77 97.18 50.00Z" fill="none" stroke="rgba(255,236,170,.55)" stroke-width="1.2" transform="translate(-.6 -.6) scale(.99) translate(.5 .5)"/>
+        <circle cx="50" cy="50" r="35" fill="url(#waxIn)"/>
+        <circle cx="50" cy="50" r="35" fill="none" stroke="#7a5418" stroke-opacity=".55" stroke-width="1.6" transform="translate(.8 .9)"/>
+        <circle cx="50" cy="50" r="35" fill="none" stroke="#fbe9ae" stroke-opacity=".9" stroke-width="1.4"/>
+        <use href="#rose" color="#fbe9ae" transform="translate(-.9 -.9)" opacity=".9"/>
+        <use href="#rose" color="#76521a" transform="translate(1 1.1)" opacity=".75"/>
+        <use href="#rose" color="#c79b3b"/>
+      </svg></button>
       <p class="hint">Tap the seal to open</p>
     </div>
     <button class="btn enter" id="enter" type="button">View the invitation</button>
@@ -1061,6 +1264,109 @@
       var $ = function(i) {
         return document.getElementById(i);
       };
+
+      /* Audio / Melodic Synthesizer Setup */
+      var isMusicPlaying = false;
+      var synth = null;
+      var polySynth = null;
+      var musicLoop = null;
+
+      function initAudio() {
+        if (synth) return;
+        try {
+          Tone.start();
+          // Polyphonic synthesizer producing romantic classical piano tones
+          polySynth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'sine' },
+            envelope: { attack: 0.1, decay: 0.8, sustain: 0.4, release: 1.2 }
+          }).toDestination();
+          polySynth.volume.value = -12;
+
+          // Upbeat, fast & joyful wedding melody
+          var notes = [
+            // Upbeat energetic phrase
+            { time: "0:0:0", note: ["C4", "E4", "G4"] },
+            { time: "0:0:2", note: ["G4"] },
+            { time: "0:1:0", note: ["C5"] },
+            { time: "0:1:2", note: ["G4"] },
+            { time: "0:2:0", note: ["E4"] },
+            { time: "0:2:2", note: ["G4"] },
+            { time: "0:3:0", note: ["C5"] },
+            { time: "0:3:2", note: ["E5"] },
+
+            { time: "1:0:0", note: ["F4", "A4", "C5"] },
+            { time: "1:0:2", note: ["C5"] },
+            { time: "1:1:0", note: ["F5"] },
+            { time: "1:1:2", note: ["C5"] },
+            { time: "1:2:0", note: ["A4"] },
+            { time: "1:2:2", note: ["C5"] },
+            { time: "1:3:0", note: ["F5"] },
+            { time: "1:3:2", note: ["D5"] },
+
+            { time: "2:0:0", note: ["G3", "B3", "D4", "G4"] },
+            { time: "2:0:2", note: ["D5"] },
+            { time: "2:1:0", note: ["B4"] },
+            { time: "2:1:2", note: ["G4"] },
+            { time: "2:2:0", note: ["D5"] },
+            { time: "2:2:2", note: ["F5"] },
+            { time: "2:3:0", note: ["E5"] },
+            { time: "2:3:2", note: ["D5"] },
+
+            { time: "3:0:0", note: ["C4", "E4", "G4", "C5"] },
+            { time: "3:1:0", note: ["G4"] },
+            { time: "3:2:0", note: ["E4"] },
+            { time: "3:3:0", note: ["C4"] }
+          ];
+
+          musicLoop = new Tone.Part(function(time, value) {
+            polySynth.triggerAttackRelease(value.note, "8n", time);
+          }, notes);
+
+          musicLoop.loop = true;
+          musicLoop.loopEnd = "4:0:0";
+          Tone.Transport.bpm.value = 132;
+        } catch(e) {
+          console.warn('Audio init error', e);
+        }
+      }
+
+      function toggleMusic(forceState) {
+        initAudio();
+        if (typeof forceState === 'boolean') isMusicPlaying = !forceState;
+        
+        var btn = $('music-toggle');
+        var iconOff = $('music-icon-off');
+        var iconOn = $('music-icon-on');
+
+        if (!isMusicPlaying) {
+          Tone.Transport.start();
+          if (musicLoop) musicLoop.start(0);
+          isMusicPlaying = true;
+          if (btn) {
+            btn.classList.add('playing');
+            if (iconOff) iconOff.style.display = 'none';
+            if (iconOn) iconOn.style.display = 'block';
+          }
+        } else {
+          Tone.Transport.stop();
+          if (musicLoop) musicLoop.stop();
+          isMusicPlaying = false;
+          if (btn) {
+            btn.classList.remove('playing');
+            if (iconOff) iconOff.style.display = 'block';
+            if (iconOn) iconOn.style.display = 'none';
+          }
+        }
+      }
+
+      var musicBtn = $('music-toggle');
+      if (musicBtn) {
+        musicBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          toggleMusic();
+        });
+      }
+
       var intro = $('intro'),
         stage = $('stage'),
         main = $('main');
@@ -1068,6 +1374,8 @@
       function openEnvelope() {
         if (stage.classList.contains('open')) return;
         stage.classList.add('open');
+        if (musicBtn) musicBtn.hidden = false;
+        if (!isMusicPlaying) toggleMusic(true);
         setTimeout(function() {
           stage.classList.add('shown');
           intro.classList.add('shown-btn');
@@ -1201,64 +1509,84 @@
       var currentIndex = 0;
 
       function openLightbox(index) {
-        if (index < 0 || index >= galleryImages.length) return;
+        if (index < 0 || index >= galleryImages.length || !galleryImages[index]) return;
         currentIndex = index;
         lbImg.src = galleryImages[currentIndex];
+        lightbox.classList.remove('single');
+        showLightbox();
+      }
+
+      function openSingle(src) {
+        lbImg.src = src;
+        lightbox.classList.add('single');
+        showLightbox();
+      }
+
+      function showLightbox() {
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lock');
       }
 
       function closeLightbox() {
         lightbox.classList.remove('active');
         lightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('lock');
       }
 
       function showPrev() {
+        if (lightbox.classList.contains('single')) return;
         currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
         lbImg.src = galleryImages[currentIndex];
       }
 
       function showNext() {
+        if (lightbox.classList.contains('single')) return;
         currentIndex = (currentIndex + 1) % galleryImages.length;
         lbImg.src = galleryImages[currentIndex];
       }
 
-      if (lbClose) lbClose.addEventListener('click', closeLightbox);
+      if (lbClose) lbClose.addEventListener('click', function(e) { e.stopPropagation(); closeLightbox(); });
       if (lbPrev) lbPrev.addEventListener('click', function(e) { e.stopPropagation(); showPrev(); });
       if (lbNext) lbNext.addEventListener('click', function(e) { e.stopPropagation(); showNext(); });
 
       if (lightbox) {
+        // tap the dark area around the photo to close
         lightbox.addEventListener('click', function(e) {
           if (e.target === lightbox) closeLightbox();
         });
+        // swipe left / right to move between gallery photos
+        var tx = null;
+        lightbox.addEventListener('touchstart', function(e) { tx = e.changedTouches[0].clientX; }, { passive: true });
+        lightbox.addEventListener('touchend', function(e) {
+          if (tx === null) return;
+          var dx = e.changedTouches[0].clientX - tx;
+          tx = null;
+          if (Math.abs(dx) > 50) { dx > 0 ? showPrev() : showNext(); }
+        }, { passive: true });
       }
 
       function setPhoto(container, src, index) {
         if (!container) return;
-        var im = new Image();
-        im.onload = function() {
-          container.style.backgroundImage = 'url("' + src + '")';
+        container.dataset.fullSrc = src;
+        if (typeof index !== 'undefined') {
+          galleryImages[index] = src;
+          container.dataset.index = index;
+        }
+        function apply(url) {
+          container.style.backgroundImage = 'url("' + url + '")';
           container.classList.add('has');
-          container.dataset.fullSrc = src;
-          if (typeof index !== 'undefined') {
-            galleryImages[index] = src;
-            container.dataset.index = index;
-          }
-        };
+          container.dataset.fullSrc = url;
+          if (typeof index !== 'undefined') galleryImages[index] = url;
+        }
+        var im = new Image();
+        im.onload = function() { apply(src); };
         im.onerror = function() {
-          if (src.endsWith('.jpg')) {
-            var altSrc = src.replace('.jpg', '.jpeg');
+          if (/\.jpg$/i.test(src)) {
+            var alt = src.replace(/\.jpg$/i, '.jpeg');
             var im2 = new Image();
-            im2.onload = function() {
-              container.style.backgroundImage = 'url("' + altSrc + '")';
-              container.classList.add('has');
-              container.dataset.fullSrc = altSrc;
-              if (typeof index !== 'undefined') {
-                galleryImages[index] = altSrc;
-                container.dataset.index = index;
-              }
-            };
-            im2.src = altSrc;
+            im2.onload = function() { apply(alt); };
+            im2.src = alt;
           }
         };
         im.src = src;
@@ -1273,43 +1601,32 @@
         for (var i = 0; i < IMG.gallery.length; i++) {
           var item = document.createElement('div');
           item.className = 'ph sq';
+          item.setAttribute('role', 'button');
+          item.setAttribute('tabindex', '0');
           g.appendChild(item);
           setPhoto(item, IMG.gallery[i], i);
         }
       }
 
-      // Touch / click handler to launch lightbox popup
+      // Click / tap / Enter on any loaded photo opens it on its own, full size
+      function openFrom(ph) {
+        if (!ph || !ph.classList.contains('has') || !ph.dataset.fullSrc) return;
+        if (ph.dataset.index !== undefined && ph.dataset.index !== '') openLightbox(parseInt(ph.dataset.index, 10));
+        else openSingle(ph.dataset.fullSrc);
+      }
+
       document.addEventListener('click', function(e) {
-        var ph = e.target.closest('.ph');
-        if (!ph) return;
-
-        var src = ph.dataset.fullSrc;
-        if (!src && ph.style.backgroundImage) {
-          src = ph.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-        }
-
-        if (!src) return;
-
-        // Find index in current galleryImages array if present
-        var idx = typeof ph.dataset.index !== 'undefined' && ph.dataset.index !== '' 
-          ? parseInt(ph.dataset.index, 10) 
-          : galleryImages.indexOf(src);
-
-        if (idx !== -1 && idx !== undefined && !isNaN(idx)) {
-          openLightbox(idx);
-        } else {
-          lbImg.src = src;
-          lightbox.classList.add('active');
-          lightbox.setAttribute('aria-hidden', 'false');
-        }
+        openFrom(e.target.closest ? e.target.closest('.ph') : null);
       });
 
-      // Keyboard navigation support for gallery popup
       document.addEventListener('keydown', function(e) {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'ArrowLeft') showPrev();
-        else if (e.key === 'ArrowRight') showNext();
-        else if (e.key === 'Escape') closeLightbox();
+        if (lightbox.classList.contains('active')) {
+          if (e.key === 'ArrowLeft') showPrev();
+          else if (e.key === 'ArrowRight') showNext();
+          else if (e.key === 'Escape') closeLightbox();
+        } else if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('ph')) {
+          openFrom(document.activeElement);
+        }
       });
 
       function tick() {

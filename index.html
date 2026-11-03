@@ -64,58 +64,12 @@
       background: var(--bg);
     }
 
-    .fixed-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(circle at 20% 20%, rgba(246, 191, 204, 0.25), transparent 40%),
-                  radial-gradient(circle at 80% 80%, rgba(217, 182, 104, 0.2), transparent 40%),
-                  radial-gradient(circle at 50% 50%, rgba(251, 230, 234, 0.15), transparent 60%);
-      background-attachment: fixed;
-    }
-
-    /* Floating glowing orbs for extra fluidity */
-    .bg-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.5;
-      animation: floatOrb 16s ease-in-out infinite alternate;
-    }
-    .bg-orb-1 { width: 320px; height: 320px; background: #f8c9d4; top: 10%; left: -50px; }
-    .bg-orb-2 { width: 280px; height: 280px; background: #fbe3b8; bottom: 15%; right: -50px; animation-duration: 20s; }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(50px, 80px) scale(1.15); }
-    }
-
     body.lock {
       overflow: hidden;
     }
 
-    /* Fixed static full-page background container for seamless image replacement */
-    .static-bg-container {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-      /* Replace url('img/your-bg-image.jpg') below with your custom background image when ready */
-      background: radial-gradient(ellipse at 50% 0, #fffdfa 0%, #f7ebe1 50%, #eee0d5 100%);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
     body.entered {
       background: transparent;
-    }
-
-    body.entered .strip {
-      display: block;
     }
 
     body::before {
@@ -133,7 +87,6 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      /* Replace the URL below with your background image path */
       background-image: url('img/bg.jpeg');
       background-size: cover;
       background-position: center;
@@ -180,20 +133,23 @@
 
     .env-part {
       position: absolute;
-      transition: transform 1.1s cubic-bezier(.5, 0, .3, 1), translate 1.1s cubic-bezier(.5, 0, .3, 1), opacity .9s ease;
+      transition: translate 1.1s cubic-bezier(.5, 0, .3, 1), opacity .9s ease;
     }
 
     .back {
       inset: 0;
-      background: #faf6f0;
-      border: 1px solid rgba(217, 182, 104, 0.4);
-      box-shadow: 0 25px 50px rgba(50, 35, 20, .2);
+      background: #ffffff;
+      border: 2px solid var(--gold-2);
+      box-shadow: 0 22px 40px rgba(0, 0, 0, .4);
       z-index: 1;
     }
 
     .lace {
-      background: #fdfbf7;
-      border: 1px solid rgba(217, 182, 104, 0.35);
+      background:
+        radial-gradient(circle, transparent 36%, rgba(217, 182, 104, 0.15) 38% 50%, transparent 52%) 0 0/20px 20px,
+        radial-gradient(circle, var(--gold-2) 1.2px, transparent 2px) 10px 10px/20px 20px,
+        #ffffff;
+      border: 1px solid rgba(217, 182, 104, 0.4);
     }
 
     .side {
@@ -203,72 +159,70 @@
 
     .side.l {
       clip-path: polygon(0 0, 56% 52%, 0 100%);
-      background: linear-gradient(135deg, #fdfbf7 0%, #f5efe6 100%);
     }
 
     .side.r {
       clip-path: polygon(100% 0, 44% 52%, 100% 100%);
-      background: linear-gradient(-135deg, #fdfbf7 0%, #f5efe6 100%);
     }
 
     .bottom {
       inset: 0;
       z-index: 4;
-      background: linear-gradient(180deg, #f6f0e6 0%, #ebdcc9 100%);
+      background: linear-gradient(#ffffff, #fbf8f2);
+      border: 1px solid rgba(217, 182, 104, 0.4);
       clip-path: polygon(0 100%, 50% 40%, 100% 100%);
-      border-top: 1px solid rgba(217, 182, 104, 0.4);
     }
 
     .flapwrap {
       inset: 0;
       z-index: 5;
-      perspective: 1000px;
+      perspective: 900px;
       pointer-events: none;
+      transform-style: preserve-3d;
     }
 
     .flap {
       position: absolute;
       inset: 0;
       transform-origin: 50% 0;
-      transition: transform .9s cubic-bezier(.6, 0, .3, 1);
+      transition: transform .9s cubic-bezier(.6, 0, .3, 1), z-index 0s .45s;
       clip-path: polygon(0 0, 100% 0, 50% 64%);
-      background: linear-gradient(180deg, #ffffff 0%, #f5ece0 100%);
-      border-bottom: 2px solid var(--gold-2);
       z-index: 5;
+      backface-visibility: hidden;
+      box-shadow: inset 0 -3px 8px rgba(217, 182, 104, 0.25);
     }
 
     .seal {
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 64px;
-      height: 64px;
-      margin: -24px 0 0 -32px;
+      width: 62px;
+      height: 62px;
+      margin: -26px 0 0 -31px;
       border-radius: 50%;
-      border: 2px solid #e8cd8a;
+      border: 1px solid #ffe8ab;
       padding: 0;
       cursor: pointer;
       z-index: 7;
-      background: radial-gradient(circle at 35% 30%, #f5df9e 0%, #b88a32 60%, #704c10 100%);
-      box-shadow: 0 6px 16px rgba(40, 25, 5, .4), inset 0 0 0 3px rgba(255, 245, 210, .4);
+      background: radial-gradient(circle at 35% 30%, #f7dfa5, #d9b668 55%, #8d6a2a);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, .5), inset 0 0 0 4px rgba(255, 240, 190, .4), inset 0 -4px 8px rgba(70, 40, 5, .4);
       display: grid;
       place-items: center;
       font: 400 24px "Pinyon Script", serif;
-      color: #5c3f0b;
-      text-shadow: 0 1px 0 rgba(255, 245, 210, .8);
-      transition: opacity .5s, transform .4s;
+      color: #4a3610;
+      text-shadow: 0 1px 0 rgba(255, 240, 190, .9);
+      transition: opacity .5s, scale .4s;
     }
 
     .seal:hover {
-      transform: scale(1.08);
+      scale: 1.06;
     }
 
     .seal:focus-visible,
     .btn:focus-visible,
     input:focus-visible,
     select:focus-visible,
-    textarea:focus-visible,
-    .ph:focus-within {
+    textarea:focus-visible {
       outline: 3px solid var(--gold-2);
       outline-offset: 3px;
     }
@@ -383,242 +337,12 @@
       pointer-events: auto;
     }
 
-    @media (max-height: 700px) {
-      .stage {
-        scale: .8;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .stage {
-        scale: .88;
-      }
-    }
-
     /* ---------- main page ---------- */
     main {
       position: relative;
       z-index: 2;
       padding: 34px 16px 230px;
       animation: fadein 1s;
-    }
-
-    @keyframes fadein {
-      from {
-        opacity: 0;
-      }
-    }
-
-    .panel {
-      position: relative;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, .4);
-      max-width: 480px;
-      margin: 0 auto 26px;
-      padding: 28px 18px;
-      text-align: center;
-      background: rgba(18, 16, 18, 0.88);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--line);
-      outline: 1px solid var(--line);
-      outline-offset: -8px;
-      border-radius: 20px;
-    }
-
-    .panel h2 {
-      font-family: "Pinyon Script", cursive;
-      font-weight: 400;
-      font-size: 46px;
-      margin: 0 0 10px;
-      line-height: 1.1;
-      color: var(--gold-2);
-    }
-
-    .panel p {
-      margin: 0 0 10px;
-      line-height: 1.55;
-      color: #efe1bf;
-    }
-
-    .intro.leaving {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .stage {
-      position: relative;
-      width: 340px;
-      height: 238px;
-    }
-
-    .env-part {
-      position: absolute;
-      transition: translate 1.1s cubic-bezier(.5, 0, .3, 1), opacity .9s ease;
-    }
-
-    .back {
-      inset: 0;
-      background: #ffffff;
-      border: 2px solid var(--gold-2);
-      box-shadow: 0 22px 40px rgba(0, 0, 0, .4);
-      z-index: 1;
-    }
-
-    .lace {
-      background:
-        radial-gradient(circle, transparent 36%, rgba(217, 182, 104, 0.15) 38% 50%, transparent 52%) 0 0/20px 20px,
-        radial-gradient(circle, var(--gold-2) 1.2px, transparent 2px) 10px 10px/20px 20px,
-        #ffffff;
-      border: 1px solid rgba(217, 182, 104, 0.4);
-    }
-
-    .side {
-      inset: 0;
-      z-index: 3;
-    }
-
-    .side.l {
-      clip-path: polygon(0 0, 56% 52%, 0 100%);
-    }
-
-    .side.r {
-      clip-path: polygon(100% 0, 44% 52%, 100% 100%);
-    }
-
-    .bottom {
-      inset: 0;
-      z-index: 4;
-      background: linear-gradient(#ffffff, #fbf8f2);
-      border: 1px solid rgba(217, 182, 104, 0.4);
-      clip-path: polygon(0 100%, 50% 40%, 100% 100%);
-    }
-
-    .flapwrap {
-      inset: 0;
-      z-index: 5;
-      perspective: 900px;
-      pointer-events: none;
-      transform-style: preserve-3d;
-    }
-
-    .flap {
-      position: absolute;
-      inset: 0;
-      transform-origin: 50% 0;
-      transition: transform .9s cubic-bezier(.6, 0, .3, 1), z-index 0s .45s;
-      clip-path: polygon(0 0, 100% 0, 50% 64%);
-      z-index: 5;
-      backface-visibility: hidden;
-      box-shadow: inset 0 -3px 8px rgba(217, 182, 104, 0.25);
-    }
-
-    .seal {
-      left: 50%;
-      top: 50%;
-      width: 62px;
-      height: 62px;
-      margin: -26px 0 0 -31px;
-      border-radius: 50%;
-      border: 1px solid #ffe8ab;
-      padding: 0;
-      cursor: pointer;
-      z-index: 7;
-      background: radial-gradient(circle at 35% 30%, #f7dfa5, #d9b668 55%, #8d6a2a);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, .5), inset 0 0 0 4px rgba(255, 240, 190, .4), inset 0 -4px 8px rgba(70, 40, 5, .4);
-      display: grid;
-      place-items: center;
-      font: 400 24px "Pinyon Script", serif;
-      color: #4a3610;
-      text-shadow: 0 1px 0 rgba(255, 240, 190, .9);
-      transition: opacity .5s, scale .4s;
-    }
-
-    .seal:hover {
-      scale: 1.06;
-    }
-
-    .seal:focus-visible,
-    .btn:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible,
-    .ph:focus-within {
-      outline: 3px solid var(--gold-2);
-      outline-offset: 3px;
-    }
-
-    .card {
-      position: absolute;
-      left: 50%;
-      bottom: 12px;
-      width: 300px;
-      height: 430px;
-      margin-left: -150px;
-      z-index: 2;
-      transform-origin: 50% 100%;
-      transform: scale(.52);
-      transition: transform 1s cubic-bezier(.5, 0, .2, 1) .45s, translate 1.1s cubic-bezier(.5, 0, .3, 1);
-      background: #ffffff;
-      border: 3px solid var(--gold-2);
-      outline: 1px solid var(--gold-3);
-      outline-offset: -8px;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, .3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 30px 26px;
-      color: var(--text);
-    }
-
-    .panel h2 {
-      font-family: "Pinyon Script", cursive;
-      font-weight: 400;
-      font-size: 46px;
-      margin: 0 0 10px;
-      line-height: 1.1;
-      color: var(--gold-2);
-    }
-
-    .panel p {
-      margin: 0 0 12px;
-      line-height: 1.6;
-      color: #e8dcd0;
-    }
-
-    .big {
-      font-size: 60px;
-    }
-
-    .names {
-      font-size: 48px;
-      margin: 12px 0;
-    }
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .countdown div {
-      border: 1px solid rgba(217, 182, 104, 0.3);
-      padding: 14px 4px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(4px);
-    }
-
-    .countdown b {
-      display: block;
-      font: 600 34px/1 "Cormorant Garamond", serif;
-      color: #f3d693;
-    }
-
-    .countdown span {
-      font-size: 14px;
-      color: #c9b68a;
     }
 
     @keyframes fadein {
@@ -638,15 +362,17 @@
       background: var(--panel);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 24px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--line);
+      outline: 1px solid var(--line);
+      outline-offset: -8px;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .panel:hover {
       transform: translateY(-4px);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
     }
 
     .panel h2 {
@@ -655,15 +381,23 @@
       font-size: 46px;
       margin: 0 0 10px;
       line-height: 1.1;
+      color: var(--gold-2);
+    }
+
+    .panel h2::after {
+      content: "✦";
+      display: block;
+      width: 150px;
+      margin: 6px auto 0;
+      font: 13px/1.2 serif;
+      color: var(--gold-2);
+      background: linear-gradient(90deg, transparent, var(--gold-2)) left center/58px 1px no-repeat, linear-gradient(270deg, transparent, var(--gold-2)) right center/58px 1px no-repeat;
     }
 
     .panel p {
-      margin: 0 0 10px;
-      line-height: 1.55;
-    }
-
-    .big {
-      font-size: 60px;
+      margin: 0 0 12px;
+      line-height: 1.6;
+      color: #e8dcd0;
     }
 
     .names {
@@ -681,12 +415,14 @@
     .countdown div {
       border: 1px solid var(--line);
       padding: 14px 4px;
+      border-radius: 16px;
+      background: rgba(217, 182, 104, .08);
     }
 
     .countdown b {
       display: block;
       font: 600 34px/1 "Cormorant Garamond", serif;
-      color: var(--gold-3);
+      color: var(--gold-2);
     }
 
     .countdown span {
@@ -696,61 +432,31 @@
 
     .couple {
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
     }
 
     .person {
-      width: min(210px, 44%);
-      min-width: 150px;
+      width: 170px;
+      text-align: center;
     }
 
     .ph {
       position: relative;
-      display: grid;
-      place-items: center;
-      text-align: center;
+      display: block;
       cursor: pointer;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.3;
-      background: rgba(247, 240, 232, .7) center/cover;
+      background: rgba(247, 240, 232, .1) center/cover no-repeat;
       border: 2px dashed var(--gold-2);
       overflow: hidden;
-    }
-
-    .ph input {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
-
-    .ph.has {
-      border-style: solid;
-      color: transparent;
     }
 
     .ph.round {
       width: 100%;
       aspect-ratio: 1;
       border-radius: 50%;
-    }
-
-    .ph.sq {
-      aspect-ratio: 1;
-    }
-
-    .ph svg {
-      width: 30px;
-      height: 30px;
-      display: block;
-      margin: 0 auto 4px;
-      fill: var(--gold-2);
+      border-style: solid;
+      box-shadow: 0 0 0 5px var(--panel), 0 0 0 7px var(--gold-2), 0 14px 28px rgba(0, 0, 0, .4);
     }
 
     .person h3 {
@@ -763,24 +469,28 @@
     .person p {
       font-size: 16px;
       color: var(--muted);
+      margin: 0;
     }
 
     .amp {
       align-self: center;
-      font: 400 40px "Pinyon Script", cursive;
+      font: 400 42px "Pinyon Script", cursive;
       color: var(--gold-3);
+      margin: 4px 0;
+      line-height: 1;
+      animation: beat 2.4s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      50% {
+        transform: scale(1.18);
+      }
     }
 
     .fam {
       display: grid;
       gap: 22px;
       text-align: left;
-    }
-
-    @media (min-width: 520px) {
-      .fam {
-        grid-template-columns: 1fr 1fr;
-      }
     }
 
     .fam h3 {
@@ -807,10 +517,126 @@
       font-size: 20px;
     }
 
+    /* Creative Bento Grid Layout for Photo Gallery */
     .gal {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 120px;
+      gap: 10px;
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .gal .ph {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    .gal .ph:hover, .gal .ph:active {
+      transform: scale(1.02);
+      border-color: var(--gold-2);
+      box-shadow: 0 6px 20px rgba(217, 182, 104, 0.3);
+    }
+
+    /* Creative Bento Spans */
+    .gal .ph:nth-child(1) { grid-column: span 2; grid-row: span 2; height: 240px; }
+    .gal .ph:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+    .gal .ph:nth-child(3) { grid-column: span 1; grid-row: span 2; height: 250px; }
+    .gal .ph:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+    .gal .ph:nth-child(5) { grid-column: span 1; grid-row: span 1; }
+    .gal .ph:nth-child(6) { grid-column: span 2; grid-row: span 1; }
+
+    /* Lightbox Modal CSS */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 88vw;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 2px solid var(--gold-2);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.9);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background: rgba(18, 16, 18, 0.85);
+      border: 1px solid var(--gold-2);
+      color: var(--gold-2);
+      font-size: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      z-index: 210;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .lightbox-nav.prev { left: 16px; }
+    .lightbox-nav.next { right: 16px; }
+
+    .lightbox-nav:hover, .lightbox-nav:active {
+      transform: translateY(-50%) scale(1.1);
+      background: var(--gold-2);
+      color: #121012;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 46px;
+      height: 46px;
+      background: rgba(18, 16, 18, 0.85);
+      border: 1px solid var(--gold-2);
+      color: var(--gold-2);
+      font-size: 30px;
+      font-weight: bold;
+      border-radius: 50%;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      line-height: 1;
+      z-index: 210;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .lightbox-close:hover, .lightbox-close:active {
+      transform: scale(1.1);
+      background: var(--gold-2);
+      color: #121012;
     }
 
     .btn {
@@ -824,6 +650,7 @@
       background: linear-gradient(100deg, var(--gold-1), var(--gold-2) 50%, var(--gold-3));
       border: 0;
       box-shadow: 0 6px 16px rgba(120, 90, 30, .25);
+
     }
 
     .btn:hover {
@@ -878,8 +705,6 @@
       align-items: center;
       justify-content: center;
     }
-
-    /* Deleted .blob and .waves styling */
 
     .arch {
       position: relative;
@@ -953,39 +778,6 @@
       }
     }
 
-    .waves {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 200%;
-      pointer-events: none;
-      z-index: 1;
-      animation: flow 12s linear infinite;
-    }
-
-    .waves path {
-      fill: currentColor;
-    }
-
-    .waves.a {
-      color: #f9d6df;
-      opacity: .85;
-      height: 170px;
-    }
-
-    .waves.b {
-      color: #fdeff2;
-      height: 130px;
-      animation-duration: 8s;
-      animation-direction: reverse;
-    }
-
-    @keyframes flow {
-      to {
-        transform: translateX(-50%);
-      }
-    }
-
     .cue {
       position: absolute;
       z-index: 3;
@@ -1024,180 +816,6 @@
     .rv.in {
       opacity: 1;
       transform: none;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .welcome .rise {
-        opacity: 1;
-        animation: none;
-      }
-
-      .arch,
-      .blob,
-      .waves,
-      .shine,
-      .cue {
-        animation: none;
-      }
-
-      .rv {
-        opacity: 1;
-        transform: none;
-        transition: none;
-      }
-    }
-
-    .panel h2::after {
-      content: "✦";
-      display: block;
-      width: 150px;
-      margin: 6px auto 0;
-      font: 13px/1.2 serif;
-      color: var(--gold-2);
-      background: linear-gradient(90deg, transparent, var(--gold-2)) left center/58px 1px no-repeat, linear-gradient(270deg, transparent, var(--gold-2)) right center/58px 1px no-repeat;
-    }
-
-    .sparks {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .sparks i {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      background: var(--gold-2);
-      rotate: 45deg;
-      opacity: 0;
-      animation: tw 3.2s ease-in-out infinite;
-    }
-
-    .sparks i:nth-child(2n) {
-      width: 5px;
-      height: 5px;
-      animation-delay: 1s;
-    }
-
-    .sparks i:nth-child(3n) {
-      animation-delay: 2s;
-    }
-
-    @keyframes tw {
-      50% {
-        opacity: .9;
-        transform: scale(1.5);
-      }
-    }
-
-    .crown {
-      position: absolute;
-      left: 50%;
-      top: -30px;
-      width: 190px;
-      height: 60px;
-      margin-left: -95px;
-      z-index: 3;
-      filter: drop-shadow(0 4px 5px rgba(0, 0, 0, .4));
-    }
-
-    .ph.round {
-      box-shadow: 0 0 0 5px var(--panel), 0 0 0 7px var(--gold-2), 0 14px 28px rgba(0, 0, 0, .4);
-    }
-
-    .amp {
-      animation: beat 2.4s ease-in-out infinite;
-    }
-
-    @keyframes beat {
-      50% {
-        transform: scale(1.18);
-      }
-    }
-
-    .countdown div {
-      border-radius: 16px;
-      background: rgba(217, 182, 104, .08);
-    }
-
-    .tl {
-      position: absolute;
-      bottom: -6px;
-      width: 46px;
-      height: 123px;
-      z-index: 3;
-      transform-origin: 50% 100%;
-      animation: sway 5s ease-in-out infinite alternate;
-    }
-
-    .tl.l {
-      left: -24px;
-    }
-
-    .tl.r {
-      right: -24px;
-      animation-delay: -2s;
-    }
-
-    @keyframes sway {
-      from {
-        transform: rotate(-3deg);
-      }
-      to {
-        transform: rotate(3deg);
-      }
-    }
-
-    .ph.round {
-      box-shadow: 0 0 0 5px var(--panel), 0 0 0 7px var(--gold-2), 0 14px 28px rgba(190, 120, 140, .25);
-    }
-
-    .amp {
-      animation: beat 2.4s ease-in-out infinite;
-    }
-
-    @keyframes beat {
-      50% {
-        transform: scale(1.18);
-      }
-    }
-
-    .countdown div {
-      border-radius: 16px;
-      background: linear-gradient(160deg, rgba(217, 182, 104, .14), rgba(240, 170, 184, .16));
-    }
-
-    .gal .ph {
-      border-radius: 10px;
-    }
-
-    .gal .ph:nth-child(1) {
-      grid-column: span 2;
-      grid-row: span 2;
-      aspect-ratio: auto;
-    }
-
-    .endflowers {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 200px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .tl,
-      .amp,
-      .sparks i {
-        animation: none;
-      }
-
-      .sparks i {
-        opacity: .6;
-      }
     }
 
     .scratch {
@@ -1282,30 +900,6 @@
         transform: translate3d(var(--dx), 115vh, 0) rotate(var(--rot));
       }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      .petal {
-        display: none;
-      }
-
-      main {
-        animation: none;
-      }
-
-      .env-part,
-      .card,
-      .flap,
-      .seal,
-      .enter,
-      .intro {
-        transition-duration: .01s !important;
-        transition-delay: 0s !important;
-      }
-    }
   </style>
 </head>
 <body class="lock">
@@ -1340,16 +934,6 @@
 
   <main id="main" hidden>
     <section class="welcome" id="welcome">
-      <div class="sparks" aria-hidden="true">
-        <i style="left:10%;top:14%"></i>
-        <i style="left:84%;top:10%"></i>
-        <i style="left:92%;top:42%"></i>
-        <i style="left:6%;top:50%"></i>
-        <i style="left:16%;top:78%"></i>
-        <i style="left:80%;top:72%"></i>
-        <i style="left:48%;top:5%"></i>
-        <i style="left:60%;top:86%"></i>
-      </div>
       <div class="arch">
         <p class="script wel rise" style="--i:1"><span class="gold shine">Welcome</span></p>
         <p class="rise" style="--i:2">With joy in our hearts and the blessings of our families, we invite you to celebrate the wedding of</p>
@@ -1380,29 +964,13 @@
       <h2 class="gold">The bride &amp; groom</h2>
       <div class="couple">
         <div class="person">
-          <label class="ph round" id="ph-groom" tabindex="-1">
-            <input type="file" accept="image/*" aria-label="Add groom photo">
-            <span>
-              <svg viewBox="0 0 24 24">
-                <path d="M12 5a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h2V8a3 3 0 0 1 3-3Zm0 5.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
-              </svg>
-              Add groom photo
-            </span>
-          </label>
+          <div class="ph round" id="ph-groom"></div>
           <h3 class="gold">Aarav</h3>
           <p>The groom</p>
         </div>
         <div class="amp">&amp;</div>
         <div class="person">
-          <label class="ph round" id="ph-bride" tabindex="-1">
-            <input type="file" accept="image/*" aria-label="Add bride photo">
-            <span>
-              <svg viewBox="0 0 24 24">
-                <path d="M12 5a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h2V8a3 3 0 0 1 3-3Zm0 5.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
-              </svg>
-              Add bride photo
-            </span>
-          </label>
+          <div class="ph round" id="ph-bride"></div>
           <h3 class="gold">Meera</h3>
           <p>The bride</p>
         </div>
@@ -1471,10 +1039,15 @@
       <p class="script gold names">Aarav &amp; Meera</p>
       <footer class="sig">and our families</footer>
     </section>
-    <svg class="endflowers" aria-hidden="true">
-      <rect width="100%" height="200" fill="url(#pb)" />
-    </svg>
   </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lb-close" type="button" aria-label="Close image">&times;</button>
+    <button class="lightbox-nav prev" id="lb-prev" type="button" aria-label="Previous image">&#10094;</button>
+    <button class="lightbox-nav next" id="lb-next" type="button" aria-label="Next image">&#10095;</button>
+    <img id="lb-img" src="" alt="Full view photo">
+  </div>
 
   <script>
     (function() {
@@ -1483,7 +1056,7 @@
       var IMG = {
         groom: 'img/groom.jpg',
         bride: 'img/bride.jpg',
-        gallery: ['img/gallery1.jpg', 'img/gallery2.jpg', 'img/gallery3.jpg', 'img/gallery4.jpg', 'img/gallery5.jpg', 'img/gallery6.jpg']
+        gallery: ['img/pic1.jpg', 'img/pic2.jpg', 'img/pic3.jpg', 'img/pic4.jpg', 'img/pic5.jpg', 'img/pic6.jpg']
       };
       var $ = function(i) {
         return document.getElementById(i);
@@ -1501,24 +1074,32 @@
         }, 1200);
       }
 
-      stage.addEventListener('click', openEnvelope);
-      $('seal').addEventListener('click', function(e) {
-        e.stopPropagation();
-        openEnvelope();
-      });
+      if (stage) {
+        stage.addEventListener('click', openEnvelope);
+      }
+      var sealBtn = $('seal');
+      if (sealBtn) {
+        sealBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openEnvelope();
+        });
+      }
 
-      $('enter').addEventListener('click', function() {
-        intro.classList.add('leaving');
-        setTimeout(function() {
-          intro.hidden = true;
-          main.hidden = false;
-          document.body.classList.remove('lock');
-          document.body.classList.add('entered');
-          initScratch();
-          reveal();
-          window.scrollTo(0, 0);
-        }, 700);
-      });
+      var enterBtn = $('enter');
+      if (enterBtn) {
+        enterBtn.addEventListener('click', function() {
+          intro.classList.add('leaving');
+          setTimeout(function() {
+            intro.hidden = true;
+            main.hidden = false;
+            document.body.classList.remove('lock');
+            document.body.classList.add('entered');
+            initScratch();
+            reveal();
+            window.scrollTo(0, 0);
+          }, 700);
+        });
+      }
 
       function reveal() {
         if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1541,7 +1122,7 @@
       function initScratch() {
         var box = $('scratch'),
           c = $('sc');
-        if (box.classList.contains('done')) return;
+        if (!box || box.classList.contains('done')) return;
         var r = box.getBoundingClientRect(),
           dpr = window.devicePixelRatio || 1,
           w = r.width,
@@ -1610,61 +1191,162 @@
         $('skip').addEventListener('click', done);
       }
 
-      var icon = '<svg viewBox="0 0 24 24"><path d="M12 5a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h2V8a3 3 0 0 1 3-3Zm0 5.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>';
       var g = $('gal');
+      var lightbox = $('lightbox');
+      var lbImg = $('lb-img');
+      var lbClose = $('lb-close');
+      var lbPrev = $('lb-prev');
+      var lbNext = $('lb-next');
+      var galleryImages = [];
+      var currentIndex = 0;
 
-      function setPhoto(label, src) {
+      function openLightbox(index) {
+        if (index < 0 || index >= galleryImages.length) return;
+        currentIndex = index;
+        lbImg.src = galleryImages[currentIndex];
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        lbImg.src = galleryImages[currentIndex];
+      }
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % galleryImages.length;
+        lbImg.src = galleryImages[currentIndex];
+      }
+
+      if (lbClose) lbClose.addEventListener('click', closeLightbox);
+      if (lbPrev) lbPrev.addEventListener('click', function(e) { e.stopPropagation(); showPrev(); });
+      if (lbNext) lbNext.addEventListener('click', function(e) { e.stopPropagation(); showNext(); });
+
+      if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+          if (e.target === lightbox) closeLightbox();
+        });
+      }
+
+      function setPhoto(container, src, index) {
+        if (!container) return;
         var im = new Image();
         im.onload = function() {
-          label.style.backgroundImage = 'url("' + src + '")';
-          label.classList.add('has')
+          container.style.backgroundImage = 'url("' + src + '")';
+          container.classList.add('has');
+          container.dataset.fullSrc = src;
+          if (typeof index !== 'undefined') {
+            galleryImages[index] = src;
+            container.dataset.index = index;
+          }
+        };
+        im.onerror = function() {
+          if (src.endsWith('.jpg')) {
+            var altSrc = src.replace('.jpg', '.jpeg');
+            var im2 = new Image();
+            im2.onload = function() {
+              container.style.backgroundImage = 'url("' + altSrc + '")';
+              container.classList.add('has');
+              container.dataset.fullSrc = altSrc;
+              if (typeof index !== 'undefined') {
+                galleryImages[index] = altSrc;
+                container.dataset.index = index;
+              }
+            };
+            im2.src = altSrc;
+          }
         };
         im.src = src;
       }
+
       setPhoto($('ph-groom'), IMG.groom);
       setPhoto($('ph-bride'), IMG.bride);
-      for (var i = 0; i < IMG.gallery.length; i++) {
-        g.insertAdjacentHTML('beforeend', '<label class="ph sq"><input type="file" accept="image/*" aria-label="Add gallery photo ' + (i + 1) + '"><span>' + icon + 'Add photo</span></label>');
-        setPhoto(g.lastElementChild, IMG.gallery[i]);
+
+      if (g) {
+        g.innerHTML = '';
+        galleryImages = new Array(IMG.gallery.length);
+        for (var i = 0; i < IMG.gallery.length; i++) {
+          var item = document.createElement('div');
+          item.className = 'ph sq';
+          g.appendChild(item);
+          setPhoto(item, IMG.gallery[i], i);
+        }
       }
-      document.addEventListener('change', function(e) {
-        var t = e.target;
-        if (t.type !== 'file' || !t.files[0]) return;
-        var l = t.parentNode;
-        l.style.backgroundImage = 'url(' + URL.createObjectURL(t.files[0]) + ')';
-        l.classList.add('has');
+
+      // Touch / click handler to launch lightbox popup
+      document.addEventListener('click', function(e) {
+        var ph = e.target.closest('.ph');
+        if (!ph) return;
+
+        // If it's a gallery item with index
+        if (typeof ph.dataset.index !== 'undefined' && ph.dataset.index !== '') {
+          openLightbox(parseInt(ph.dataset.index, 10));
+        } else {
+          // If groom/bride photo or image with dataset.fullSrc or computed style background
+          var bg = ph.dataset.fullSrc;
+          if (!bg && ph.style.backgroundImage) {
+            bg = ph.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+          }
+          if (bg) {
+            // Find index in current galleryImages array if present, otherwise set directly
+            var foundIdx = galleryImages.indexOf(bg);
+            if (foundIdx !== -1) {
+              openLightbox(foundIdx);
+            } else {
+              lbImg.src = bg;
+              lightbox.classList.add('active');
+              lightbox.setAttribute('aria-hidden', 'false');
+            }
+          }
+        }
+      });
+
+      // Keyboard navigation support for gallery popup
+      document.addEventListener('keydown', function(e) {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'ArrowLeft') showPrev();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'Escape') closeLightbox();
       });
 
       function tick() {
         var ms = WEDDING - new Date();
         if (ms <= 0) {
-          $('cd').hidden = true;
-          $('cdnote').textContent = 'The celebration has begun. Thank you for being with us!';
+          if ($('cd')) $('cd').hidden = true;
+          if ($('cdnote')) $('cdnote').textContent = 'The celebration has begun. Thank you for being with us!';
           return;
         }
         var s = Math.floor(ms / 1000);
-        $('d').textContent = Math.floor(s / 86400);
-        $('h').textContent = Math.floor(s % 86400 / 3600);
-        $('m').textContent = Math.floor(s % 3600 / 60);
-        $('s').textContent = s % 60;
+        if ($('d')) $('d').textContent = Math.floor(s / 86400);
+        if ($('h')) $('h').textContent = Math.floor(s % 86400 / 3600);
+        if ($('m')) $('m').textContent = Math.floor(s % 3600 / 60);
+        if ($('s')) $('s').textContent = s % 60;
       }
       tick();
       setInterval(tick, 1000);
 
-      $('rsvp').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var name = $('n').value.trim(),
-          att = $('a').value,
-          n = $('g').value,
-          w = $('w').value.trim();
-        var msg = 'RSVP for Aarav & Meera’s wedding\nName: ' + name + '\nAttending: ' + att + '\nGuests: ' + n + (w ? '\nNote: ' + w : '');
-        $('tmsg').textContent = 'Thank you, ' + name + '! Tap below to send your reply to the couple.';
-        $('wa').href = 'https://wa.me/' + RSVP_PHONE + '?text=' + encodeURIComponent(msg);
-        $('thanks').hidden = false;
-        $('thanks').scrollIntoView({
-          block: 'center'
+      var rsvpForm = $('rsvp');
+      if (rsvpForm) {
+        rsvpForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name = $('n').value.trim(),
+            att = $('a').value,
+            n = $('g').value,
+            w = $('w').value.trim();
+          var msg = 'RSVP for Aarav & Meera’s wedding\nName: ' + name + '\nAttending: ' + att + '\nGuests: ' + n + (w ? '\nNote: ' + w : '');
+          $('tmsg').textContent = 'Thank you, ' + name + '! Tap below to send your reply to the couple.';
+          $('wa').href = 'https://wa.me/' + RSVP_PHONE + '?text=' + encodeURIComponent(msg);
+          $('thanks').hidden = false;
+          $('thanks').scrollIntoView({
+            block: 'center'
+          });
         });
-      });
+      }
 
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         for (var k = 0; k < 14; k++) {

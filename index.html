@@ -86,13 +86,17 @@
     .fixed-main-bg {
       position: fixed;
       inset: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100lvh;
       z-index: 0;
       pointer-events: none;
       background-image: url('img/bg.jpeg');
       background-size: cover;
-      background-position: center;
+      background-position: center center;
       background-repeat: no-repeat;
-      background-attachment: fixed;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     .gold {
@@ -117,7 +121,7 @@
       display: grid;
       place-items: center;
       transition: opacity .7s;
-      background: url('img/bg3.jpeg') center/cover no-repeat;
+      background: url('img/bg1.jpg') center/cover no-repeat;
     }
 
     .intro.leaving {
@@ -1256,6 +1260,18 @@
     (function() {
       var WEDDING = new Date('2027-02-14T10:30:00+05:30');
       var RSVP_PHONE = '919000000000';
+      var ROUGH_IMG = {
+        groom: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+        bride: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+        gallery: [
+          'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80'
+        ]
+      };
       var IMG = {
         groom: 'img/groom.jpg',
         bride: 'img/bride.jpg',
@@ -1281,52 +1297,55 @@
             envelope: { attack: 0.1, decay: 0.8, sustain: 0.4, release: 1.2 }
           }).toDestination();
           polySynth.volume.value = -12;
+        } catch (e) {
+          console.warn('Audio initialization failed or not supported:', e);
+        }
+      }
 
-          // Upbeat, fast & joyful wedding melody
-          var notes = [
-            // Upbeat energetic phrase
-            { time: "0:0:0", note: ["C4", "E4", "G4"] },
-            { time: "0:0:2", note: ["G4"] },
-            { time: "0:1:0", note: ["C5"] },
-            { time: "0:1:2", note: ["G4"] },
-            { time: "0:2:0", note: ["E4"] },
-            { time: "0:2:2", note: ["G4"] },
-            { time: "0:3:0", note: ["C5"] },
-            { time: "0:3:2", note: ["E5"] },
+      function setPhoto(container, src, index, fallbackSrc) {
+        if (!container) return;
+        container.dataset.fullSrc = src;
+        if (typeof index !== 'undefined') {
+          galleryImages[index] = src;
+          container.dataset.index = index;
+        }
+        function apply(url) {
+          container.style.backgroundImage = 'url("' + url + '")';
+          container.classList.add('has');
+          container.dataset.fullSrc = url;
+          if (typeof index !== 'undefined') galleryImages[index] = url;
+        }
+        var im = new Image();
+        im.onload = function() { apply(src); };
+        im.onerror = function() {
+          if (/\.jpg$/i.test(src)) {
+            var alt = src.replace(/\.jpg$/i, '.jpeg');
+            var im2 = new Image();
+            im2.onload = function() { apply(alt); };
+            im2.onerror = function() {
+              if (fallbackSrc) apply(fallbackSrc);
+            };
+            im2.src = alt;
+          } else if (fallbackSrc) {
+            apply(fallbackSrc);
+          }
+        };
+        im.src = src;
+      }
 
-            { time: "1:0:0", note: ["F4", "A4", "C5"] },
-            { time: "1:0:2", note: ["C5"] },
-            { time: "1:1:0", note: ["F5"] },
-            { time: "1:1:2", note: ["C5"] },
-            { time: "1:2:0", note: ["A4"] },
-            { time: "1:2:2", note: ["C5"] },
-            { time: "1:3:0", note: ["F5"] },
-            { time: "1:3:2", note: ["D5"] },
+      setPhoto($('ph-groom'), IMG.groom, undefined, ROUGH_IMG.groom);
+      setPhoto($('ph-bride'), IMG.bride, undefined, ROUGH_IMG.bride);
 
-            { time: "2:0:0", note: ["G3", "B3", "D4", "G4"] },
-            { time: "2:0:2", note: ["D5"] },
-            { time: "2:1:0", note: ["B4"] },
-            { time: "2:1:2", note: ["G4"] },
-            { time: "2:2:0", note: ["D5"] },
-            { time: "2:2:2", note: ["F5"] },
-            { time: "2:3:0", note: ["E5"] },
-            { time: "2:3:2", note: ["D5"] },
-
-            { time: "3:0:0", note: ["C4", "E4", "G4", "C5"] },
-            { time: "3:1:0", note: ["G4"] },
-            { time: "3:2:0", note: ["E4"] },
-            { time: "3:3:0", note: ["C4"] }
-          ];
-
-          musicLoop = new Tone.Part(function(time, value) {
-            polySynth.triggerAttackRelease(value.note, "8n", time);
-          }, notes);
-
-          musicLoop.loop = true;
-          musicLoop.loopEnd = "4:0:0";
-          Tone.Transport.bpm.value = 132;
-        } catch(e) {
-          console.warn('Audio init error', e);
+      if (g) {
+        g.innerHTML = '';
+        galleryImages = new Array(IMG.gallery.length);
+        for (var i = 0; i < IMG.gallery.length; i++) {
+          var item = document.createElement('div');
+          item.className = 'ph sq';
+          item.setAttribute('role', 'button');
+          item.setAttribute('tabindex', '0');
+          g.appendChild(item);
+          setPhoto(item, IMG.gallery[i], i, ROUGH_IMG.gallery[i]);
         }
       }
 
